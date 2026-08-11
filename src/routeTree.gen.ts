@@ -17,7 +17,9 @@ import { Route as TvRouteImport } from './routes/tv'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminConfiguracionRouteImport } from './routes/_authenticated/admin.configuracion'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin.dashboard'
+import { Route as AuthenticatedAdminEstadisticasRouteImport } from './routes/_authenticated/admin.estadisticas'
 import { Route as AuthenticatedAdminProductosRouteImport } from './routes/_authenticated/admin.productos'
 import { Route as AuthenticatedAdminPromocionesRouteImport } from './routes/_authenticated/admin.promociones'
 
@@ -60,10 +62,22 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminConfiguracionRoute =
+  AuthenticatedAdminConfiguracionRouteImport.update({
+    id: '/configuracion',
+    path: '/configuracion',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminDashboardRoute =
   AuthenticatedAdminDashboardRouteImport.update({
     id: '/dashboard',
     path: '/dashboard',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminEstadisticasRoute =
+  AuthenticatedAdminEstadisticasRouteImport.update({
+    id: '/estadisticas',
+    path: '/estadisticas',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminProductosRoute =
@@ -86,7 +100,9 @@ export interface FileRoutesByFullPath {
   '/tv': typeof TvRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/configuracion': typeof AuthenticatedAdminConfiguracionRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/estadisticas': typeof AuthenticatedAdminEstadisticasRoute
   '/admin/productos': typeof AuthenticatedAdminProductosRoute
   '/admin/promociones': typeof AuthenticatedAdminPromocionesRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -97,7 +113,9 @@ export interface FileRoutesByTo {
   '/trading': typeof TradingRoute
   '/tv': typeof TvRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/configuracion': typeof AuthenticatedAdminConfiguracionRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/estadisticas': typeof AuthenticatedAdminEstadisticasRoute
   '/admin/productos': typeof AuthenticatedAdminProductosRoute
   '/admin/promociones': typeof AuthenticatedAdminPromocionesRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -111,7 +129,9 @@ export interface FileRoutesById {
   '/tv': typeof TvRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/_authenticated/admin/configuracion': typeof AuthenticatedAdminConfiguracionRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/_authenticated/admin/estadisticas': typeof AuthenticatedAdminEstadisticasRoute
   '/_authenticated/admin/productos': typeof AuthenticatedAdminProductosRoute
   '/_authenticated/admin/promociones': typeof AuthenticatedAdminPromocionesRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -125,7 +145,9 @@ export interface FileRouteTypes {
     | '/tv'
     | '/admin'
     | '/admin/login'
+    | '/admin/configuracion'
     | '/admin/dashboard'
+    | '/admin/estadisticas'
     | '/admin/productos'
     | '/admin/promociones'
     | '/admin/'
@@ -136,7 +158,9 @@ export interface FileRouteTypes {
     | '/trading'
     | '/tv'
     | '/admin/login'
+    | '/admin/configuracion'
     | '/admin/dashboard'
+    | '/admin/estadisticas'
     | '/admin/productos'
     | '/admin/promociones'
     | '/admin'
@@ -149,7 +173,9 @@ export interface FileRouteTypes {
     | '/tv'
     | '/_authenticated/admin'
     | '/admin/login'
+    | '/_authenticated/admin/configuracion'
     | '/_authenticated/admin/dashboard'
+    | '/_authenticated/admin/estadisticas'
     | '/_authenticated/admin/productos'
     | '/_authenticated/admin/promociones'
     | '/_authenticated/admin/'
@@ -222,11 +248,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/configuracion': {
+      id: '/_authenticated/admin/configuracion'
+      path: '/configuracion'
+      fullPath: '/admin/configuracion'
+      preLoaderRoute: typeof AuthenticatedAdminConfiguracionRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/dashboard': {
       id: '/_authenticated/admin/dashboard'
       path: '/dashboard'
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/estadisticas': {
+      id: '/_authenticated/admin/estadisticas'
+      path: '/estadisticas'
+      fullPath: '/admin/estadisticas'
+      preLoaderRoute: typeof AuthenticatedAdminEstadisticasRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/productos': {
@@ -247,14 +287,18 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminConfiguracionRoute: typeof AuthenticatedAdminConfiguracionRoute
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
+  AuthenticatedAdminEstadisticasRoute: typeof AuthenticatedAdminEstadisticasRoute
   AuthenticatedAdminProductosRoute: typeof AuthenticatedAdminProductosRoute
   AuthenticatedAdminPromocionesRoute: typeof AuthenticatedAdminPromocionesRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminConfiguracionRoute: AuthenticatedAdminConfiguracionRoute,
   AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
+  AuthenticatedAdminEstadisticasRoute: AuthenticatedAdminEstadisticasRoute,
   AuthenticatedAdminProductosRoute: AuthenticatedAdminProductosRoute,
   AuthenticatedAdminPromocionesRoute: AuthenticatedAdminPromocionesRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
