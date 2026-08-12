@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Activity, CandlestickChart, Flame, Monitor } from "lucide-react";
+import { Activity, CandlestickChart, Flame, Monitor, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const LINKS = [
@@ -55,6 +55,12 @@ export function PublicNav() {
             MERCADO ABIERTO
           </span>
           <span className="num hidden text-sm text-foreground sm:block">{now}</span>
+          <Link
+            to="/admin/dashboard"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          >
+            <ShieldCheck className="size-3.5" /> Administración
+          </Link>
         </div>
       </div>
     </header>
