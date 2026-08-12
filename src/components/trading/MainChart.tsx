@@ -186,6 +186,7 @@ export function MainChart({
 }
 
 function applyData(series: any, candles: Candle[], type: ChartType) {
+  try { (window as any).__cavaApply = { n: candles.length, sample: candles.slice(-2) }; } catch { /* noop */ }
   const data = type === "heikin" ? toHeikinAshi(candles) : candles;
   if (type === "line" || type === "area" || type === "baseline") {
     series.setData(data.map((c) => ({ time: c.time as any, value: c.close })));
