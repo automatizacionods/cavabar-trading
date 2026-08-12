@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import { supabase } from "@/integrations/supabase/client";
 import { useProducts } from "@/hooks/useTradingData";
 import { CATEGORIES, changePct, formatPrice, type Product } from "@/lib/trading";
@@ -203,11 +204,10 @@ function ProductosPage() {
                   onChange={(e) => setDraft({ ...draft, description: e.target.value })}
                 />
               </Field>
-              <Field label="URL de imagen" className="sm:col-span-2">
-                <Input
-                  placeholder="https://…"
+              <Field label="Imagen del producto" className="sm:col-span-2">
+                <ImageUploader
                   value={draft.image_url}
-                  onChange={(e) => setDraft({ ...draft, image_url: e.target.value })}
+                  onChange={(url) => setDraft({ ...draft, image_url: url })}
                 />
               </Field>
               <Field label="Precio base">

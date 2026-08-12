@@ -2,6 +2,7 @@ import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-rout
 import {
   Activity,
   BarChart3,
+  CandlestickChart,
   LayoutDashboard,
   LogOut,
   Monitor,
@@ -21,6 +22,7 @@ const NAV = [
   { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/productos", label: "Productos", icon: Package },
   { to: "/admin/promociones", label: "Promociones", icon: Zap },
+  { to: "/admin/graficos", label: "Gráficos", icon: CandlestickChart },
   { to: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
   { to: "/admin/configuracion", label: "Configuración", icon: Settings },
 ] as const;

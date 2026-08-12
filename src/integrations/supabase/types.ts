@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      candles: {
+        Row: {
+          bucket_at: string
+          close: number
+          created_at: string
+          high: number
+          id: string
+          low: number
+          open: number
+          product_id: string
+          volume: number
+        }
+        Insert: {
+          bucket_at?: string
+          close: number
+          created_at?: string
+          high: number
+          id?: string
+          low: number
+          open: number
+          product_id: string
+          volume?: number
+        }
+        Update: {
+          bucket_at?: string
+          close?: number
+          created_at?: string
+          high?: number
+          id?: string
+          low?: number
+          open?: number
+          product_id?: string
+          volume?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candles_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       price_history: {
         Row: {
           created_at: string
@@ -184,8 +228,15 @@ export type Database = {
       }
       settings: {
         Row: {
+          animation_speed: string
           auto_pricing: boolean
           bar_name: string
+          chart_interval_seconds: number
+          chart_type: string
+          color_bg: string
+          color_down: string
+          color_grid: string
+          color_up: string
           currency: string
           id: number
           tick_seconds: number
@@ -193,8 +244,15 @@ export type Database = {
           volatility: number
         }
         Insert: {
+          animation_speed?: string
           auto_pricing?: boolean
           bar_name?: string
+          chart_interval_seconds?: number
+          chart_type?: string
+          color_bg?: string
+          color_down?: string
+          color_grid?: string
+          color_up?: string
           currency?: string
           id?: number
           tick_seconds?: number
@@ -202,8 +260,15 @@ export type Database = {
           volatility?: number
         }
         Update: {
+          animation_speed?: string
           auto_pricing?: boolean
           bar_name?: string
+          chart_interval_seconds?: number
+          chart_type?: string
+          color_bg?: string
+          color_down?: string
+          color_grid?: string
+          color_up?: string
           currency?: string
           id?: number
           tick_seconds?: number

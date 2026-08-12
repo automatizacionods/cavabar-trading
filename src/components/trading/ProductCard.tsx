@@ -2,24 +2,22 @@ import { motion } from "motion/react";
 import { ArrowDownRight, ArrowUpRight, Flame, Rocket, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { Sparkline } from "@/components/trading/Sparkline";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import { changePct, formatClock, formatPrice, type Product, type Promotion } from "@/lib/trading";
 import { cn } from "@/lib/utils";
 
 type Props = {
   product: Product;
-  history: number[];
+  history?: number[];
   promo?: Promotion | null;
   msLeft?: number;
   large?: boolean;
 };
 
-export function ProductCard({ product, history, promo, msLeft = 0, large = false }: Props) {
+export function ProductCard({ product, promo, msLeft = 0, large = false }: Props) {
   const pct = changePct(product);
   const isUp = pct >= 0;
   const price = promo ? Number(promo.promo_price) : Number(product.current_price);
-  const tone: "up" | "down" | "promo" = promo ? "promo" : isUp ? "up" : "down";
 
   const [flash, setFlash] = useState<"up" | "down" | null>(null);
   const prev = useRef(price);
@@ -158,11 +156,6 @@ export function ProductCard({ product, history, promo, msLeft = 0, large = false
         </div>
       </div>
 
-      <Sparkline
-        data={history}
-        tone={tone}
-        className={cn("mt-3 w-full", large ? "h-16" : "h-9")}
-      />
     </motion.article>
   );
 }
