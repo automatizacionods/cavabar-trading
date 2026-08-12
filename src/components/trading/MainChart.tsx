@@ -110,11 +110,8 @@ export function MainChart({
         });
       }
 
-      (window as any).__cavaChart = chart;
-      (window as any).__cavaSeries = series;
       chartRef.current = chart;
       seriesRef.current = series;
-      (window as any).__cavaDebug = { n: dataRef.current.length, first: dataRef.current[0], last: dataRef.current.at(-1) };
       applyData(series, dataRef.current, type);
       chart.timeScale().fitContent();
 
@@ -188,7 +185,6 @@ export function MainChart({
 }
 
 function applyData(series: any, candles: Candle[], type: ChartType) {
-  try { (window as any).__cavaApply = { n: candles.length, sample: candles.slice(-2) }; } catch { /* noop */ }
   const data = type === "heikin" ? toHeikinAshi(candles) : candles;
   if (type === "line" || type === "area" || type === "baseline") {
     series.setData(data.map((c) => ({ time: c.time as any, value: c.close })));
