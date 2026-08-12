@@ -71,6 +71,7 @@ export function MainChart({
         timeScale: { borderColor: config.color_grid, timeVisible: true, secondsVisible: false },
         crosshair: { mode: lc.CrosshairMode.Normal },
         localization: {
+          locale: "es-CO",
           priceFormatter: (p: number) =>
             new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(p),
         },
