@@ -112,6 +112,7 @@ export function MainChart({
 
       chartRef.current = chart;
       seriesRef.current = series;
+      (window as any).__cavaDebug = { n: dataRef.current.length, first: dataRef.current[0], last: dataRef.current.at(-1) };
       applyData(series, dataRef.current, type);
       chart.timeScale().fitContent();
 
