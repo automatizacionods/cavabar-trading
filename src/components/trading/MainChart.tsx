@@ -110,6 +110,8 @@ export function MainChart({
         });
       }
 
+      (window as any).__cavaChart = chart;
+      (window as any).__cavaSeries = series;
       chartRef.current = chart;
       seriesRef.current = series;
       (window as any).__cavaDebug = { n: dataRef.current.length, first: dataRef.current[0], last: dataRef.current.at(-1) };
