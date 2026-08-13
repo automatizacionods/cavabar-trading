@@ -85,13 +85,6 @@ function TradingPage() {
 
   const selected = list.find((p) => p.id === selectedId) ?? null;
   const candles = useCandles(selectedId);
-  const chartCandles = useMemo(() => {
-    const rows = candles.data ?? [];
-    if (rows.length > 1) return rows;
-    if (!selected) return rows;
-    return seedCandles(Number(selected.current_price), bounds, 90, config.chart_interval_seconds);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candles.data, selected?.id]);
   const promo = selected ? (livePromos.get(selected.id) ?? null) : null;
 
   const avgChange =
@@ -100,6 +93,14 @@ function TradingPage() {
   const bounds = selected
     ? { min: Number(selected.min_price), max: Number(selected.max_price) }
     : { min: 0, max: 1 };
+
+  const chartCandles = useMemo(() => {
+    const rows = candles.data ?? [];
+    if (rows.length > 1) return rows;
+    if (!selected) return rows;
+    return seedCandles(Number(selected.current_price), bounds, 90, config.chart_interval_seconds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candles.data, selected?.id, bounds.min, bounds.max, config.chart_interval_seconds]);
 
   return (
     <div className="min-h-screen">
