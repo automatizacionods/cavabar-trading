@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 
-import { CircularCountdown } from "@/components/trading/CircularCountdown";
 import { MainChart } from "@/components/trading/MainChart";
 import { PromoPanel } from "@/components/trading/PromoPanel";
 import { PublicNav } from "@/components/trading/PublicNav";
@@ -11,12 +10,10 @@ import { Ticker } from "@/components/trading/Ticker";
 import { Watchlist } from "@/components/trading/Watchlist";
 import { useCandles, useChartConfig } from "@/hooks/useCandles";
 import { seedCandles } from "@/lib/candles";
-import { useCountdown } from "@/hooks/useCountdown";
 import { usePriceHistory, useProducts, usePromotions, useRealtimeSync } from "@/hooks/useTradingData";
 import { useEnforcePublicView, useSettings } from "@/hooks/useAdminData";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import {
-  PROMO_LABEL,
   changePct,
   formatPrice,
   isPromoLive,
