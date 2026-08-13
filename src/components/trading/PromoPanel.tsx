@@ -34,6 +34,7 @@ export function PromoPanel({ promos }: Props) {
 function PromoRow({ promo, product }: { promo: Promotion; product: Product | undefined }) {
   const msLeft = useCountdown(promo.ends_at);
   const totalMs = new Date(promo.ends_at).getTime() - new Date(promo.starts_at).getTime();
+  usePromoAlarm(msLeft, promo.id);
   if (msLeft <= 0) return null;
 
   const original = Number(promo.original_price);
