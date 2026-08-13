@@ -4,13 +4,15 @@ import { useEffect, useMemo, useState } from "react";
 
 import { CircularCountdown } from "@/components/trading/CircularCountdown";
 import { MainChart } from "@/components/trading/MainChart";
+import { PromoPanel } from "@/components/trading/PromoPanel";
 import { PublicNav } from "@/components/trading/PublicNav";
+
 import { Ticker } from "@/components/trading/Ticker";
 import { Watchlist } from "@/components/trading/Watchlist";
 import { useCandles, useChartConfig } from "@/hooks/useCandles";
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePriceHistory, useProducts, usePromotions, useRealtimeSync } from "@/hooks/useTradingData";
-import { useSettings } from "@/hooks/useAdminData";
+import { useEnforcePublicView, useSettings } from "@/hooks/useAdminData";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import {
   PROMO_LABEL,
@@ -62,6 +64,7 @@ function TradingPage() {
   const { products, livePromos } = useBoard();
   const settings = useSettings();
   const config = useChartConfig();
+  useEnforcePublicView("trading");
 
   const list = products.data ?? [];
   const [category, setCategory] = useState("todas");
@@ -140,9 +143,16 @@ function TradingPage() {
             )}
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="space-y-4 lg:col-span-3">
+            <PromoPanel
+              promos={Array.from(livePromos.values()).map((promo) => ({
+                promo,
+                product: list.find((p) => p.id === promo.product_id),
+              }))}
+            />
             {selected ? <DetailPanel product={selected} promo={promo} /> : null}
           </div>
+
         </div>
 
         <div className="mb-4 mt-6 flex flex-wrap gap-2">

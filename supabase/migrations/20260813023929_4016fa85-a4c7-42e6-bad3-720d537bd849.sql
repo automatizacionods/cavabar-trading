@@ -1,0 +1,1 @@
+ALTER TABLE public.settings ADD COLUMN IF NOT EXISTS public_view text NOT NULL DEFAULT 'trading';
