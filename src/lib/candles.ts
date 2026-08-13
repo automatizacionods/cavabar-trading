@@ -84,3 +84,30 @@ export function simulateTick(
     volume: Math.round(Math.random() * 40 + 5),
   };
 }
+
+/** Builds a synthetic candle history so the chart always has something to render. */
+export function seedCandles(
+  price: number,
+  bounds: { min: number; max: number },
+  count = 90,
+  intervalSeconds = 3,
+): Candle[] {
+  const safePrice = Number.isFinite(price) && price > 0 ? price : (bounds.min + bounds.max) / 2 || 1;
+  const start = Math.floor(Date.now() / 1000) - count * intervalSeconds;
+  const out: Candle[] = [];
+  let prev: Candle = {
+    time: start,
+    open: safePrice,
+    high: safePrice,
+    low: safePrice,
+    close: safePrice,
+    volume: 10,
+  };
+  out.push(prev);
+  for (let i = 1; i < count; i += 1) {
+    const next = simulateTick(prev, bounds, 2);
+    prev = { ...next, time: start + i * intervalSeconds };
+    out.push(prev);
+  }
+  return out;
+}
