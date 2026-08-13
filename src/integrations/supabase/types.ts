@@ -239,6 +239,7 @@ export type Database = {
           color_up: string
           currency: string
           id: number
+          public_view: string
           tick_seconds: number
           updated_at: string
           volatility: number
@@ -255,6 +256,7 @@ export type Database = {
           color_up?: string
           currency?: string
           id?: number
+          public_view?: string
           tick_seconds?: number
           updated_at?: string
           volatility?: number
@@ -271,6 +273,7 @@ export type Database = {
           color_up?: string
           currency?: string
           id?: number
+          public_view?: string
           tick_seconds?: number
           updated_at?: string
           volatility?: number
