@@ -52,7 +52,6 @@ export function MainChart({
 
     void (async () => {
       try {
-      console.log("CHARTINIT start");
       const lc = await import("lightweight-charts");
       const el = containerRef.current;
       if (disposed || !el) return;
@@ -188,7 +187,6 @@ export function MainChart({
 }
 
 function applyData(series: any, candles: Candle[], type: ChartType) {
-  console.log("APPLYDATA", candles.length, JSON.stringify(candles.slice(0,2)));
   const data = type === "heikin" ? toHeikinAshi(candles) : candles;
   if (type === "line" || type === "area" || type === "baseline") {
     series.setData(data.map((c) => ({ time: c.time as any, value: c.close })));
