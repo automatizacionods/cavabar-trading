@@ -140,9 +140,16 @@ function TradingPage() {
             )}
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="space-y-4 lg:col-span-3">
+            <PromoPanel
+              promos={Array.from(livePromos.values()).map((promo) => ({
+                promo,
+                product: list.find((p) => p.id === promo.product_id),
+              }))}
+            />
             {selected ? <DetailPanel product={selected} promo={promo} /> : null}
           </div>
+
         </div>
 
         <div className="mb-4 mt-6 flex flex-wrap gap-2">
