@@ -12,7 +12,7 @@ import { Watchlist } from "@/components/trading/Watchlist";
 import { useCandles, useChartConfig } from "@/hooks/useCandles";
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePriceHistory, useProducts, usePromotions, useRealtimeSync } from "@/hooks/useTradingData";
-import { useSettings } from "@/hooks/useAdminData";
+import { useEnforcePublicView, useSettings } from "@/hooks/useAdminData";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import {
   PROMO_LABEL,
@@ -64,6 +64,7 @@ function TradingPage() {
   const { products, livePromos } = useBoard();
   const settings = useSettings();
   const config = useChartConfig();
+  useEnforcePublicView("trading");
 
   const list = products.data ?? [];
   const [category, setCategory] = useState("todas");

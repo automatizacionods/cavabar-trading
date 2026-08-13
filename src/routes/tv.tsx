@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { CircularCountdown } from "@/components/trading/CircularCountdown";
 import { Sparkline } from "@/components/trading/Sparkline";
+import { useEnforcePublicView } from "@/hooks/useAdminData";
 import { useCountdown } from "@/hooks/useCountdown";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import { PROMO_LABEL, changePct, formatPrice } from "@/lib/trading";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/tv")({
 
 function TvPage() {
   const { products, history, livePromos } = useBoard();
+  useEnforcePublicView("tv");
   const list = products.data ?? [];
   const [index, setIndex] = useState(0);
 
