@@ -2,6 +2,7 @@ import { ArrowDown } from "lucide-react";
 
 import { CircularCountdown } from "@/components/trading/CircularCountdown";
 import { useCountdown } from "@/hooks/useCountdown";
+import { usePromoAlarm } from "@/hooks/usePromoAlarm";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import { PROMO_LABEL, formatPrice, type Product, type Promotion } from "@/lib/trading";
 
