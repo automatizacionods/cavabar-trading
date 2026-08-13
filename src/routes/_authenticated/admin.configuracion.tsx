@@ -32,6 +32,7 @@ function ConfiguracionPage() {
   const [autoPricing, setAutoPricing] = useState(true);
   const [volatility, setVolatility] = useState(3);
   const [tick, setTick] = useState(15);
+  const [publicView, setPublicView] = useState("trading");
 
   useEffect(() => {
     if (!settings.data) return;
@@ -39,6 +40,7 @@ function ConfiguracionPage() {
     setAutoPricing(settings.data.auto_pricing);
     setVolatility(Number(settings.data.volatility));
     setTick(settings.data.tick_seconds);
+    setPublicView(settings.data.public_view ?? "trading");
   }, [settings.data]);
 
   const save = useMutation({
@@ -50,6 +52,7 @@ function ConfiguracionPage() {
           auto_pricing: autoPricing,
           volatility,
           tick_seconds: tick,
+          public_view: publicView,
         })
         .eq("id", 1);
       if (error) throw error;
@@ -104,6 +107,38 @@ function ConfiguracionPage() {
 
         <Button onClick={() => save.mutate()} disabled={save.isPending}>
           Guardar cambios
+        </Button>
+      </div>
+
+      <div className="glass space-y-3 rounded-2xl p-5">
+        <div>
+          <Label>Pantalla pública activa</Label>
+          <p className="text-xs text-muted-foreground">
+            Elige qué ve el cliente. Las pantallas se redirigen solas al modo seleccionado.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {[
+            { v: "trading", t: "Mercado de barra en vivo", d: "Gráfico de velas, watchlist y promociones." },
+            { v: "tv", t: "Modo TV", d: "Productos con fotos y precios en rotación." },
+          ].map((o) => (
+            <button
+              key={o.v}
+              type="button"
+              onClick={() => setPublicView(o.v)}
+              className={`rounded-xl border p-3 text-left transition-colors ${
+                publicView === o.v
+                  ? "border-primary bg-primary/10"
+                  : "border-border hover:bg-muted/40"
+              }`}
+            >
+              <p className="text-sm font-semibold">{o.t}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{o.d}</p>
+            </button>
+          ))}
+        </div>
+        <Button onClick={() => save.mutate()} disabled={save.isPending} variant="secondary">
+          Aplicar pantalla
         </Button>
       </div>
 
