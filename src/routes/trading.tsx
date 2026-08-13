@@ -4,7 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 
 import { CircularCountdown } from "@/components/trading/CircularCountdown";
 import { MainChart } from "@/components/trading/MainChart";
+import { PromoPanel } from "@/components/trading/PromoPanel";
 import { PublicNav } from "@/components/trading/PublicNav";
+
 import { Ticker } from "@/components/trading/Ticker";
 import { Watchlist } from "@/components/trading/Watchlist";
 import { useCandles, useChartConfig } from "@/hooks/useCandles";

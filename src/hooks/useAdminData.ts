@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
+
 
 export type Sale = {
   id: string;
@@ -33,6 +36,7 @@ export type Settings = {
   auto_pricing: boolean;
   volatility: number;
   tick_seconds: number;
+  public_view: string;
 };
 
 export function useSettings() {
@@ -45,3 +49,17 @@ export function useSettings() {
     },
   });
 }
+
+/** Redirects to whichever public screen the admin enabled (mercado en vivo o modo TV). */
+export function useEnforcePublicView(current: "trading" | "tv") {
+  const settings = useSettings();
+  const navigate = useNavigate();
+  const target = settings.data?.public_view;
+
+  useEffect(() => {
+    if (!target || target === current) return;
+    if (target === "tv") void navigate({ to: "/tv" });
+    if (target === "trading") void navigate({ to: "/trading" });
+  }, [target, current, navigate]);
+}
+
