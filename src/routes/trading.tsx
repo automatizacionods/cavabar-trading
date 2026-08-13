@@ -10,6 +10,7 @@ import { PublicNav } from "@/components/trading/PublicNav";
 import { Ticker } from "@/components/trading/Ticker";
 import { Watchlist } from "@/components/trading/Watchlist";
 import { useCandles, useChartConfig } from "@/hooks/useCandles";
+import { seedCandles } from "@/lib/candles";
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePriceHistory, useProducts, usePromotions, useRealtimeSync } from "@/hooks/useTradingData";
 import { useEnforcePublicView, useSettings } from "@/hooks/useAdminData";
@@ -84,6 +85,13 @@ function TradingPage() {
 
   const selected = list.find((p) => p.id === selectedId) ?? null;
   const candles = useCandles(selectedId);
+  const chartCandles = useMemo(() => {
+    const rows = candles.data ?? [];
+    if (rows.length > 1) return rows;
+    if (!selected) return rows;
+    return seedCandles(Number(selected.current_price), bounds, 90, config.chart_interval_seconds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candles.data, selected?.id]);
   const promo = selected ? (livePromos.get(selected.id) ?? null) : null;
 
   const avgChange =
@@ -128,13 +136,12 @@ function TradingPage() {
               <>
                 <ChartHeader product={selected} promo={promo} livePrice={livePrice} />
                 <MainChart
-                  candles={candles.data ?? []}
+                  candles={chartCandles}
                   config={config}
                   bounds={bounds}
                   volatility={Number(settings.data?.volatility ?? 3)}
                   onPrice={setLivePrice}
                 />
-                {promo ? <PromoOverlay product={selected} promo={promo} /> : null}
               </>
             ) : (
               <div className="glass grid h-[420px] place-items-center rounded-2xl text-muted-foreground">
@@ -224,26 +231,6 @@ function ChartHeader({
         {up ? "▲ +" : "▼ "}
         {pct.toFixed(2)}%
       </span>
-    </div>
-  );
-}
-
-function PromoOverlay({ product, promo }: { product: Product; promo: Promotion }) {
-  const msLeft = useCountdown(promo.ends_at);
-  const totalMs = new Date(promo.ends_at).getTime() - new Date(promo.starts_at).getTime();
-  if (msLeft <= 0) return null;
-  return (
-    <div className="glass promo-pulse pointer-events-none absolute right-6 top-20 flex items-center gap-4 rounded-2xl p-4">
-      <div>
-        <p className="num text-xs font-bold tracking-[0.25em]" style={{ color: "var(--promo)" }}>
-          ⚡ {PROMO_LABEL[promo.promo_type] ?? "PROMO"}
-        </p>
-        <p className="font-display text-xl font-extrabold uppercase">{product.name}</p>
-        <p className="num text-2xl font-bold" style={{ color: "var(--promo)" }}>
-          {formatPrice(Number(promo.promo_price))}
-        </p>
-      </div>
-      <CircularCountdown msLeft={msLeft} totalMs={totalMs} size={92} />
     </div>
   );
 }
