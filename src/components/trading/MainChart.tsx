@@ -51,6 +51,7 @@ export function MainChart({
     let cleanup = () => {};
 
     void (async () => {
+      try {
       const lc = await import("lightweight-charts");
       const el = containerRef.current;
       if (disposed || !el) return;
@@ -125,6 +126,7 @@ export function MainChart({
         chartRef.current = null;
         seriesRef.current = null;
       };
+      } catch (e) { console.log("CHARTERR", String(e)); }
     })();
 
     return () => {
