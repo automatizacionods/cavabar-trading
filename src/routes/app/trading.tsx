@@ -22,7 +22,7 @@ import {
 } from "@/lib/trading";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/trading")({
+export const Route = createFileRoute("/app/trading")({
   head: () => ({
     meta: [
       { title: "Trading Board en vivo | CavaBar Trading" },

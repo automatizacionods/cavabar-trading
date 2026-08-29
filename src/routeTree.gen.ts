@@ -9,14 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as TvRouteImport } from './routes/tv'
-import { Route as AppIndexRouteImport } from './routes/_app/index'
-import { Route as AppPromocionesRouteImport } from './routes/_app/promociones'
-import { Route as AppTradingRouteImport } from './routes/_app/trading'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppPromocionesRouteImport } from './routes/app/promociones'
+import { Route as AppTradingRouteImport } from './routes/app/trading'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminConfiguracionRouteImport } from './routes/_authenticated/admin.configuracion'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin.dashboard'
@@ -25,17 +25,28 @@ import { Route as AuthenticatedAdminGraficosRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminProductosRouteImport } from './routes/_authenticated/admin.productos'
 import { Route as AuthenticatedAdminPromocionesRouteImport } from './routes/_authenticated/admin.promociones'
 
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TvRoute = TvRouteImport.update({
   id: '/tv',
   path: '/tv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -52,16 +63,6 @@ const AppTradingRoute = AppTradingRouteImport.update({
   id: '/trading',
   path: '/trading',
   getParentRoute: () => AppRoute,
-} as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
@@ -106,12 +107,14 @@ const AuthenticatedAdminPromocionesRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AppIndexRoute
+  '/': typeof AuthenticatedRouteRouteWithChildren
+  '/app': typeof AppRouteWithChildren
   '/tv': typeof TvRoute
-  '/promociones': typeof AppPromocionesRoute
-  '/trading': typeof AppTradingRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/app/promociones': typeof AppPromocionesRoute
+  '/app/trading': typeof AppTradingRoute
+  '/app/': typeof AppIndexRoute
   '/admin/configuracion': typeof AuthenticatedAdminConfiguracionRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/estadisticas': typeof AuthenticatedAdminEstadisticasRoute
@@ -121,11 +124,12 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AppIndexRoute
+  '/': typeof AuthenticatedRouteRouteWithChildren
   '/tv': typeof TvRoute
-  '/promociones': typeof AppPromocionesRoute
-  '/trading': typeof AppTradingRoute
   '/admin/login': typeof AdminLoginRoute
+  '/app/promociones': typeof AppPromocionesRoute
+  '/app/trading': typeof AppTradingRoute
+  '/app': typeof AppIndexRoute
   '/admin/configuracion': typeof AuthenticatedAdminConfiguracionRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/estadisticas': typeof AuthenticatedAdminEstadisticasRoute
@@ -137,13 +141,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/_app': typeof AppRouteWithChildren
+  '/app': typeof AppRouteWithChildren
   '/tv': typeof TvRoute
-  '/_app/promociones': typeof AppPromocionesRoute
-  '/_app/trading': typeof AppTradingRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
-  '/_app/': typeof AppIndexRoute
+  '/app/promociones': typeof AppPromocionesRoute
+  '/app/trading': typeof AppTradingRoute
+  '/app/': typeof AppIndexRoute
   '/_authenticated/admin/configuracion': typeof AuthenticatedAdminConfiguracionRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/estadisticas': typeof AuthenticatedAdminEstadisticasRoute
@@ -156,11 +160,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/app'
     | '/tv'
-    | '/promociones'
-    | '/trading'
     | '/admin'
     | '/admin/login'
+    | '/app/promociones'
+    | '/app/trading'
+    | '/app/'
     | '/admin/configuracion'
     | '/admin/dashboard'
     | '/admin/estadisticas'
@@ -172,9 +178,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/tv'
-    | '/promociones'
-    | '/trading'
     | '/admin/login'
+    | '/app/promociones'
+    | '/app/trading'
+    | '/app'
     | '/admin/configuracion'
     | '/admin/dashboard'
     | '/admin/estadisticas'
@@ -185,13 +192,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_authenticated'
-    | '/_app'
+    | '/app'
     | '/tv'
-    | '/_app/promociones'
-    | '/_app/trading'
     | '/_authenticated/admin'
     | '/admin/login'
-    | '/_app/'
+    | '/app/promociones'
+    | '/app/trading'
+    | '/app/'
     | '/_authenticated/admin/configuracion'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/estadisticas'
@@ -210,18 +217,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tv': {
@@ -230,27 +237,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/tv'
       preLoaderRoute: typeof TvRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_app/': {
-      id: '/_app/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/promociones': {
-      id: '/_app/promociones'
-      path: '/promociones'
-      fullPath: '/promociones'
-      preLoaderRoute: typeof AppPromocionesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/trading': {
-      id: '/_app/trading'
-      path: '/trading'
-      fullPath: '/trading'
-      preLoaderRoute: typeof AppTradingRouteImport
-      parentRoute: typeof AppRoute
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -265,6 +251,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/promociones': {
+      id: '/app/promociones'
+      path: '/promociones'
+      fullPath: '/app/promociones'
+      preLoaderRoute: typeof AppPromocionesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/trading': {
+      id: '/app/trading'
+      path: '/trading'
+      fullPath: '/app/trading'
+      preLoaderRoute: typeof AppTradingRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'

@@ -6,11 +6,11 @@ import { Outlet } from '@tanstack/react-router'
 
 // Importar rutas
 import { Route as RootRoute } from './__root'
-import { Route as AppRoute } from './_app'
-import { Route as IndexRoute } from './index'
-import { Route as AppIndexRoute } from './_app/index'
-import { Route as AppPromocionesRoute } from './_app/promociones'
-import { Route as AppTradingRoute } from './_app/trading'
+import { Route as AppRoute } from './app'
+import { Route as IndexRoute } from './-route-backup'
+import { Route as AppIndexRoute } from './app/index'
+import { Route as AppPromocionesRoute } from './app/promociones'
+import { Route as AppTradingRoute } from './app/trading'
 
 // Crear árbol de rutas
 export const routeTree = RootRoute._addFileChildren([

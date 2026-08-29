@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { Activity, BarChart3, Home, Rocket } from "lucide-react";
 
-export const Route = createFileRoute("/_app")({
+export const Route = createFileRoute("/app")({
   component: AppLayout,
 });
 
