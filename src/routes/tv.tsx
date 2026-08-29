@@ -9,7 +9,7 @@ import { useEnforcePublicView } from "@/hooks/useAdminData";
 import { useCountdown } from "@/hooks/useCountdown";
 import { categoryEmoji, productImage } from "@/lib/product-images";
 import { PROMO_LABEL, changePct, formatPrice } from "@/lib/trading";
-import { useBoard } from "@/routes/trading";
+import { useBoard } from "@/routes/_app/trading";
 
 export const Route = createFileRoute("/tv")({
   head: () => ({
