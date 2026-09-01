@@ -59,7 +59,7 @@ export function useEnforcePublicView(current: "trading" | "tv") {
   useEffect(() => {
     if (!target || target === current) return;
     if (target === "tv") void navigate({ to: "/tv" });
-    if (target === "trading") void navigate({ to: "/trading" });
+    if (target === "trading") void navigate({ to: "/app/trading" });
   }, [target, current, navigate]);
 }
 

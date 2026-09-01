@@ -168,7 +168,7 @@ function LoginPage() {
         </div>
 
         <Link
-          to="/trading"
+          to="/app/trading"
           className="mt-6 block text-center text-xs text-muted-foreground hover:text-foreground"
         >
           ← Ver el tablero público
