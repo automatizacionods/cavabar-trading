@@ -79,11 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "CavaBar Trading — Mercado de barra en vivo" },
+      {
+        name: "description",
+        content:
+          "Tablero bursátil en tiempo real para bares: precios dinámicos, promociones con cuenta regresiva y modo TV.",
+      },
+      { property: "og:title", content: "CavaBar Trading — Mercado de barra en vivo" },
+      {
+        property: "og:description",
+        content:
+          "Tablero bursátil en tiempo real para bares: precios dinámicos, promociones con cuenta regresiva y modo TV.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
