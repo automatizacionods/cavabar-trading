@@ -3,8 +3,8 @@ import { Activity, CandlestickChart, Flame, Monitor, ShieldCheck } from "lucide-
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { to: "/trading", label: "Trading Board", icon: CandlestickChart },
-  { to: "/promociones", label: "Promociones", icon: Flame },
+  { to: "/app/trading", label: "Trading Board", icon: CandlestickChart },
+  { to: "/app/promociones", label: "Promociones", icon: Flame },
   { to: "/tv", label: "Modo TV", icon: Monitor },
 ] as const;
 
@@ -20,7 +20,7 @@ export function PublicNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-4 px-4 py-3 sm:px-6">
-        <Link to="/trading" className="flex items-center gap-2">
+        <Link to="/app/trading" className="flex items-center gap-2">
           <span
             className="grid size-9 place-items-center rounded-xl"
             style={{ background: "color-mix(in oklab, var(--primary) 22%, transparent)" }}
