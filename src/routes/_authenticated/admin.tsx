@@ -4,15 +4,19 @@ import {
   BarChart3,
   CandlestickChart,
   LayoutDashboard,
+  Loader2,
   LogOut,
   Monitor,
   Package,
   Settings,
+  ShieldCheck,
+  Users,
   Zap,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeSync } from "@/hooks/useTradingData";
+import { ROLE_LABEL, useMyRoles } from "@/hooks/useRoles";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
@@ -24,12 +28,15 @@ const NAV = [
   { to: "/admin/promociones", label: "Promociones", icon: Zap },
   { to: "/admin/graficos", label: "Gráficos", icon: CandlestickChart },
   { to: "/admin/estadisticas", label: "Estadísticas", icon: BarChart3 },
+  { to: "/admin/usuarios", label: "Usuarios", icon: Users },
   { to: "/admin/configuracion", label: "Configuración", icon: Settings },
 ] as const;
 
 function AdminLayout() {
   useRealtimeSync();
   const navigate = useNavigate();
+  const me = useMyRoles();
+
 
   const signOut = async () => {
     await supabase.auth.signOut();
