@@ -10,8 +10,6 @@ type Props = {
   onChange: (url: string) => void;
 };
 
-const YEAR = 60 * 60 * 24 * 365;
-
 export function ImageUploader({ value, onChange }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [busy, setBusy] = useState(false);
@@ -33,7 +31,7 @@ export function ImageUploader({ value, onChange }: Props) {
       if (error) throw error;
       const { data, error: signErr } = await supabase.storage
         .from("product-images")
-        .createSignedUrl(path, YEAR);
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
       if (signErr) throw signErr;
       onChange(data?.signedUrl ?? "");
       toast.success("Imagen cargada");

@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Activity, KeyRound, Loader2 } from "lucide-react";
+import { KeyRound, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
+import logo from "@/assets/cavabar-trading-logo.jpeg";
 
 export const Route = createFileRoute("/admin/login")({
   head: () => ({
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/admin/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup" | "recover">("login");
+  const [mode, setMode] = useState<"login" | "recover">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -47,15 +48,6 @@ function LoginPage() {
         });
         if (error) throw error;
         toast.success("Te enviamos un correo para restablecer la contraseña");
-        setMode("login");
-      } else if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: `${window.location.origin}/admin/dashboard` },
-        });
-        if (error) throw error;
-        toast.success("Cuenta creada. Ya puedes entrar.");
         setMode("login");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -84,13 +76,8 @@ function LoginPage() {
   return (
     <div className="grid-lines flex min-h-screen items-center justify-center px-4">
       <div className="glass w-full max-w-md rounded-3xl p-8">
-        <div className="flex items-center gap-2">
-          <span
-            className="grid size-10 place-items-center rounded-xl"
-            style={{ background: "color-mix(in oklab, var(--primary) 22%, transparent)" }}
-          >
-            <Activity className="size-5 text-primary" />
-          </span>
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="CavaBar Trading" className="size-14 rounded-xl object-cover" />
           <span className="font-display text-xl font-extrabold">
             CavaBar<span className="text-primary"> Trading</span>
           </span>
@@ -99,9 +86,7 @@ function LoginPage() {
         <h1 className="mt-6 font-display text-2xl font-bold">
           {mode === "recover"
             ? "Recuperar contraseña"
-            : mode === "signup"
-              ? "Crear cuenta de administrador"
-              : "Panel de administración"}
+            : "Panel de administración"}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {mode === "recover"
@@ -138,7 +123,7 @@ function LoginPage() {
 
           <Button type="submit" className="w-full" disabled={busy}>
             {busy ? <Loader2 className="size-4 animate-spin" /> : <KeyRound className="size-4" />}
-            {mode === "recover" ? "Enviar enlace" : mode === "signup" ? "Crear cuenta" : "Entrar"}
+            {mode === "recover" ? "Enviar enlace" : "Entrar"}
           </Button>
         </form>
 
@@ -151,19 +136,14 @@ function LoginPage() {
         </Button>
 
         <div className="mt-6 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
-          {mode !== "login" ? (
+          {mode === "recover" ? (
             <button onClick={() => setMode("login")} className="hover:text-foreground">
               Volver a iniciar sesión
             </button>
           ) : (
-            <>
-              <button onClick={() => setMode("recover")} className="hover:text-foreground">
-                Olvidé mi contraseña
-              </button>
-              <button onClick={() => setMode("signup")} className="hover:text-foreground">
-                Crear cuenta
-              </button>
-            </>
+            <button onClick={() => setMode("recover")} className="hover:text-foreground">
+              Olvidé mi contraseña
+            </button>
           )}
         </div>
 

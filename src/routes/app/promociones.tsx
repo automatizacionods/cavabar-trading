@@ -7,7 +7,7 @@ import { useCountdown } from "@/hooks/useCountdown";
 import { PROMO_LABEL, formatPrice, isPromoLive, type Promotion } from "@/lib/trading";
 import { useBoard } from "@/routes/app/trading";
 
-   export const Route = createFileRoute("/app/promociones")({
+export const Route = createFileRoute("/app/promociones")({
   head: () => ({
     meta: [
       { title: "Promociones activas | CavaBar Trading" },

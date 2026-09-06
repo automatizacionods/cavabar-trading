@@ -12,6 +12,16 @@ import { ROLE_LABEL, useMyRoles } from "@/hooks/useRoles";
 import { createUser, deleteUser, listUsers, setUserRole, type AppRole } from "@/lib/users.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/usuarios")({
+  head: () => ({
+    meta: [
+      { title: "Usuarios y roles | CavaBar Trading" },
+      { name: "description", content: "Administra las cuentas y permisos de CavaBar Trading." },
+      { property: "og:title", content: "Usuarios y roles | CavaBar Trading" },
+      { property: "og:description", content: "Gestión segura de administradores y usuarios." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: UsersPage,
 });
 
