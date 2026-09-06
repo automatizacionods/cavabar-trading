@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { reportLovableError } from "@/lib/lovable-error-reporting";
 
 type Props = {
   candles: Candle[];
@@ -43,6 +44,7 @@ export function MainChart({
   onPriceRef.current = onPrice;
 
   const [type, setType] = useState<ChartType>(config.chart_type);
+  const [chartError, setChartError] = useState(false);
   useEffect(() => setType(config.chart_type), [config.chart_type]);
 
   // Create / recreate chart when type or theme changes.
@@ -52,9 +54,10 @@ export function MainChart({
 
     void (async () => {
       try {
-      const lc = await import("lightweight-charts");
-      const el = containerRef.current;
-      if (disposed || !el) return;
+        setChartError(false);
+        const lc = await import("lightweight-charts");
+        const el = containerRef.current;
+        if (disposed || !el) return;
 
       const chart = lc.createChart(el, {
         height,
@@ -126,7 +129,11 @@ export function MainChart({
         chartRef.current = null;
         seriesRef.current = null;
       };
-      } catch (e) { console.log("CHARTERR", String(e)); }
+      } catch (error) {
+        console.error(error);
+        reportLovableError(error, { boundary: "main_chart" });
+        if (!disposed) setChartError(true);
+      }
     })();
 
     return () => {
@@ -181,7 +188,13 @@ export function MainChart({
           </Select>
         ) : null}
       </div>
-      <div ref={containerRef} className="w-full" style={{ height }} />
+      <div ref={containerRef} className="w-full" style={{ height }}>
+        {chartError ? (
+          <div className="grid h-full place-items-center text-center text-sm text-muted-foreground">
+            <p>No fue posible cargar el gráfico. Actualiza la pantalla para intentarlo de nuevo.</p>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
