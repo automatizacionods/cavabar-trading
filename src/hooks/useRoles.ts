@@ -10,8 +10,12 @@ export function useMyRoles() {
     queryFn: async () => {
       const { data: auth } = await supabase.auth.getUser();
       const user = auth.user;
-      if (!user) return { roles: [] as AppRole[], isManager: false, isSuperadmin: false, userId: null };
-      const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+      if (!user)
+        return { roles: [] as AppRole[], isManager: false, isSuperadmin: false, userId: null };
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id);
       if (error) throw error;
       const roles = (data ?? []).map((r) => r.role as AppRole);
       return {

@@ -15,7 +15,11 @@ export const Route = createFileRoute("/_authenticated/admin/configuracion")({
   head: () => ({
     meta: [
       { title: "Configuración | CavaBar Trading" },
-      { name: "description", content: "Ajusta el nombre del bar, la volatilidad del mercado y el ritmo de actualización de precios." },
+      {
+        name: "description",
+        content:
+          "Ajusta el nombre del bar, la volatilidad del mercado y el ritmo de actualización de precios.",
+      },
       { property: "og:title", content: "Configuración | CavaBar Trading" },
       { property: "og:description", content: "Parámetros del motor de precios." },
     ],
@@ -135,7 +139,11 @@ function ConfiguracionPage() {
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           {[
-            { v: "trading", t: "Mercado de barra en vivo", d: "Gráfico de velas, watchlist y promociones." },
+            {
+              v: "trading",
+              t: "Mercado de barra en vivo",
+              d: "Gráfico de velas, watchlist y promociones.",
+            },
             { v: "tv", t: "Modo TV", d: "Productos con fotos y precios en rotación." },
           ].map((o) => (
             <button

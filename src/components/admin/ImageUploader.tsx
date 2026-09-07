@@ -78,7 +78,11 @@ export function ImageUploader({ value, onChange }: Props) {
             disabled={busy}
             className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold hover:bg-accent"
           >
-            {busy ? <Loader2 className="size-3.5 animate-spin" /> : <ImagePlus className="size-3.5" />}
+            {busy ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <ImagePlus className="size-3.5" />
+            )}
             {value ? "Reemplazar" : "Subir imagen"}
           </button>
           {value ? (

@@ -32,7 +32,10 @@ export const Route = createFileRoute("/_authenticated/admin/promociones")({
   head: () => ({
     meta: [
       { title: "Promociones inteligentes | CavaBar Trading" },
-      { name: "description", content: "Lanza flash sales y happy hours con cuenta regresiva en menos de 10 segundos." },
+      {
+        name: "description",
+        content: "Lanza flash sales y happy hours con cuenta regresiva en menos de 10 segundos.",
+      },
       { property: "og:title", content: "Promociones inteligentes | CavaBar Trading" },
       { property: "og:description", content: "Motor de ofertas con cronómetro en vivo." },
     ],
@@ -66,9 +69,12 @@ function PromocionesAdminPage() {
   const launch = useMutation({
     mutationFn: async () => {
       if (!selected) throw new Error("Selecciona un producto");
-      if (!Number.isFinite(value) || value <= 0) throw new Error("El descuento debe ser mayor que cero");
-      if (type !== "fixed" && value > 100) throw new Error("El descuento porcentual no puede superar el 100%");
-      if (!Number.isFinite(duration) || duration <= 0) throw new Error("La duración debe ser mayor que cero");
+      if (!Number.isFinite(value) || value <= 0)
+        throw new Error("El descuento debe ser mayor que cero");
+      if (type !== "fixed" && value > 100)
+        throw new Error("El descuento porcentual no puede superar el 100%");
+      if (!Number.isFinite(duration) || duration <= 0)
+        throw new Error("La duración debe ser mayor que cero");
       const now = new Date();
       const ends = new Date(now.getTime() + duration * 60_000);
       const { error } = await supabase.from("promotions").insert({
@@ -262,7 +268,9 @@ function PromocionesAdminPage() {
               <span className="w-40 truncate font-semibold">
                 {list.find((x) => x.id === p.product_id)?.name ?? "Producto"}
               </span>
-              <span className="text-muted-foreground">{PROMO_LABEL[p.promo_type] ?? p.promo_type}</span>
+              <span className="text-muted-foreground">
+                {PROMO_LABEL[p.promo_type] ?? p.promo_type}
+              </span>
               <span className="num" style={{ color: "var(--promo)" }}>
                 {formatPrice(Number(p.promo_price))}
               </span>

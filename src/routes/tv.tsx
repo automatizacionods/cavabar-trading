@@ -118,7 +118,8 @@ function TvPage() {
 
                 <div className="mt-8 flex flex-wrap items-end gap-10">
                   <div>
-                    <p className="num text-8xl font-extrabold leading-none xl:text-9xl"
+                    <p
+                      className="num text-8xl font-extrabold leading-none xl:text-9xl"
                       style={{ color: promo ? "var(--promo)" : undefined }}
                     >
                       {formatPrice(promo ? Number(promo.promo_price) : Number(hero.current_price))}

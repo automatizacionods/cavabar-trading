@@ -33,7 +33,10 @@ export const Route = createFileRoute("/_authenticated/admin/productos")({
   head: () => ({
     meta: [
       { title: "Productos | CavaBar Trading" },
-      { name: "description", content: "Crea, edita y elimina los productos del bar con precios mínimos y máximos." },
+      {
+        name: "description",
+        content: "Crea, edita y elimina los productos del bar con precios mínimos y máximos.",
+      },
       { property: "og:title", content: "Productos | CavaBar Trading" },
       { property: "og:description", content: "Gestión de catálogo del bar." },
     ],
@@ -83,17 +86,28 @@ function ProductosPage() {
     mutationFn: async () => {
       const name = draft.name.trim();
       if (!name) throw new Error("Ingresa el nombre del producto");
-      if (![draft.base_price, draft.min_price, draft.max_price, draft.current_price].every(Number.isFinite)) {
+      if (
+        ![draft.base_price, draft.min_price, draft.max_price, draft.current_price].every(
+          Number.isFinite,
+        )
+      ) {
         throw new Error("Todos los precios deben ser números válidos");
       }
-      if (draft.min_price < 0 || draft.max_price < 0 || draft.base_price < 0 || draft.current_price < 0) {
+      if (
+        draft.min_price < 0 ||
+        draft.max_price < 0 ||
+        draft.base_price < 0 ||
+        draft.current_price < 0
+      ) {
         throw new Error("Los precios no pueden ser negativos");
       }
-      if (draft.min_price > draft.max_price) throw new Error("El precio mínimo no puede superar al máximo");
+      if (draft.min_price > draft.max_price)
+        throw new Error("El precio mínimo no puede superar al máximo");
       if (draft.current_price < draft.min_price || draft.current_price > draft.max_price) {
         throw new Error("El precio actual debe estar dentro del rango mínimo y máximo");
       }
-      if (!Number.isInteger(draft.stock) || draft.stock < 0) throw new Error("El stock debe ser un número entero positivo");
+      if (!Number.isInteger(draft.stock) || draft.stock < 0)
+        throw new Error("El stock debe ser un número entero positivo");
       const payload = {
         ...draft,
         name,
@@ -108,7 +122,11 @@ function ProductosPage() {
           .insert({ product_id: editing.id, price: draft.current_price });
         if (historyError) throw historyError;
       } else {
-        const { data, error } = await supabase.from("products").insert(payload).select("id").single();
+        const { data, error } = await supabase
+          .from("products")
+          .insert(payload)
+          .select("id")
+          .single();
         if (error) throw error;
         if (data) {
           const { error: historyError } = await supabase
@@ -306,7 +324,9 @@ function ProductosPage() {
                   <td className="num px-4 py-3 text-muted-foreground">
                     {formatPrice(Number(p.min_price))} – {formatPrice(Number(p.max_price))}
                   </td>
-                  <td className="num px-4 py-3 font-bold">{formatPrice(Number(p.current_price))}</td>
+                  <td className="num px-4 py-3 font-bold">
+                    {formatPrice(Number(p.current_price))}
+                  </td>
                   <td
                     className="num px-4 py-3 font-semibold"
                     style={{ color: pct >= 0 ? "var(--up)" : "var(--down)" }}

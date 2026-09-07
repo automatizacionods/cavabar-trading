@@ -59,76 +59,76 @@ export function MainChart({
         const el = containerRef.current;
         if (disposed || !el) return;
 
-      const chart = lc.createChart(el, {
-        height,
-        layout: {
-          background: { color: "transparent" },
-          textColor: "#94A3B8",
-          fontFamily: "inherit",
-          attributionLogo: false,
-        },
-        grid: {
-          vertLines: { color: config.color_grid },
-          horzLines: { color: config.color_grid },
-        },
-        rightPriceScale: { borderColor: config.color_grid },
-        timeScale: { borderColor: config.color_grid, timeVisible: true, secondsVisible: false },
-        crosshair: { mode: lc.CrosshairMode.Normal },
-        localization: {
-          locale: "es-CO",
-          priceFormatter: (p: number) =>
-            new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(p),
-        },
-      });
-
-      const upDown = { upColor: config.color_up, downColor: config.color_down };
-      let series: any;
-      if (type === "line") {
-        series = chart.addSeries(lc.LineSeries, { color: config.color_up, lineWidth: 2 });
-      } else if (type === "area") {
-        series = chart.addSeries(lc.AreaSeries, {
-          lineColor: config.color_up,
-          topColor: `${config.color_up}55`,
-          bottomColor: `${config.color_up}05`,
-          lineWidth: 2,
+        const chart = lc.createChart(el, {
+          height,
+          layout: {
+            background: { color: "transparent" },
+            textColor: "#94A3B8",
+            fontFamily: "inherit",
+            attributionLogo: false,
+          },
+          grid: {
+            vertLines: { color: config.color_grid },
+            horzLines: { color: config.color_grid },
+          },
+          rightPriceScale: { borderColor: config.color_grid },
+          timeScale: { borderColor: config.color_grid, timeVisible: true, secondsVisible: false },
+          crosshair: { mode: lc.CrosshairMode.Normal },
+          localization: {
+            locale: "es-CO",
+            priceFormatter: (p: number) =>
+              new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(p),
+          },
         });
-      } else if (type === "baseline") {
-        series = chart.addSeries(lc.BaselineSeries, {
-          baseValue: { type: "price", price: (bounds.min + bounds.max) / 2 },
-          topLineColor: config.color_up,
-          topFillColor1: `${config.color_up}55`,
-          topFillColor2: `${config.color_up}05`,
-          bottomLineColor: config.color_down,
-          bottomFillColor1: `${config.color_down}05`,
-          bottomFillColor2: `${config.color_down}55`,
-        });
-      } else if (type === "bars") {
-        series = chart.addSeries(lc.BarSeries, { ...upDown, thinBars: false });
-      } else {
-        series = chart.addSeries(lc.CandlestickSeries, {
-          ...upDown,
-          borderUpColor: config.color_up,
-          borderDownColor: config.color_down,
-          wickUpColor: config.color_up,
-          wickDownColor: config.color_down,
-        });
-      }
 
-      chartRef.current = chart;
-      seriesRef.current = series;
-      applyData(series, dataRef.current, type);
-      chart.timeScale().fitContent();
+        const upDown = { upColor: config.color_up, downColor: config.color_down };
+        let series: any;
+        if (type === "line") {
+          series = chart.addSeries(lc.LineSeries, { color: config.color_up, lineWidth: 2 });
+        } else if (type === "area") {
+          series = chart.addSeries(lc.AreaSeries, {
+            lineColor: config.color_up,
+            topColor: `${config.color_up}55`,
+            bottomColor: `${config.color_up}05`,
+            lineWidth: 2,
+          });
+        } else if (type === "baseline") {
+          series = chart.addSeries(lc.BaselineSeries, {
+            baseValue: { type: "price", price: (bounds.min + bounds.max) / 2 },
+            topLineColor: config.color_up,
+            topFillColor1: `${config.color_up}55`,
+            topFillColor2: `${config.color_up}05`,
+            bottomLineColor: config.color_down,
+            bottomFillColor1: `${config.color_down}05`,
+            bottomFillColor2: `${config.color_down}55`,
+          });
+        } else if (type === "bars") {
+          series = chart.addSeries(lc.BarSeries, { ...upDown, thinBars: false });
+        } else {
+          series = chart.addSeries(lc.CandlestickSeries, {
+            ...upDown,
+            borderUpColor: config.color_up,
+            borderDownColor: config.color_down,
+            wickUpColor: config.color_up,
+            wickDownColor: config.color_down,
+          });
+        }
 
-      const ro = new ResizeObserver(() => chart.applyOptions({ width: el.clientWidth }));
-      ro.observe(el);
-      chart.applyOptions({ width: el.clientWidth });
+        chartRef.current = chart;
+        seriesRef.current = series;
+        applyData(series, dataRef.current, type);
+        chart.timeScale().fitContent();
 
-      cleanup = () => {
-        ro.disconnect();
-        chart.remove();
-        chartRef.current = null;
-        seriesRef.current = null;
-      };
+        const ro = new ResizeObserver(() => chart.applyOptions({ width: el.clientWidth }));
+        ro.observe(el);
+        chart.applyOptions({ width: el.clientWidth });
+
+        cleanup = () => {
+          ro.disconnect();
+          chart.remove();
+          chartRef.current = null;
+          seriesRef.current = null;
+        };
       } catch (error) {
         console.error(error);
         reportLovableError(error, { boundary: "main_chart" });

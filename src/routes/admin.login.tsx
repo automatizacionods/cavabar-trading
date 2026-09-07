@@ -16,7 +16,8 @@ export const Route = createFileRoute("/admin/login")({
       { title: "Acceso administrador | CavaBar Trading" },
       {
         name: "description",
-        content: "Ingresa al panel de administración de CavaBar Trading para gestionar productos y promociones.",
+        content:
+          "Ingresa al panel de administración de CavaBar Trading para gestionar productos y promociones.",
       },
       { property: "og:title", content: "Acceso administrador | CavaBar Trading" },
       { property: "og:description", content: "Panel de control del bar." },
@@ -81,9 +82,7 @@ function LoginPage() {
         </div>
 
         <h1 className="mt-6 font-display text-2xl font-bold">
-          {mode === "recover"
-            ? "Recuperar contraseña"
-            : "Panel de administración"}
+          {mode === "recover" ? "Recuperar contraseña" : "Panel de administración"}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {mode === "recover"

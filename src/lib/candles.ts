@@ -93,7 +93,8 @@ export function seedCandles(
   count = 90,
   intervalSeconds = 3,
 ): Candle[] {
-  const safePrice = Number.isFinite(price) && price > 0 ? price : (bounds.min + bounds.max) / 2 || 1;
+  const safePrice =
+    Number.isFinite(price) && price > 0 ? price : (bounds.min + bounds.max) / 2 || 1;
   const start = Math.floor(Date.now() / 1000) - count * intervalSeconds;
   const out: Candle[] = [];
   let prev: Candle = {
