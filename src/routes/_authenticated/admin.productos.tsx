@@ -110,11 +110,12 @@ function ProductosPage() {
       } else {
         const { data, error } = await supabase.from("products").insert(payload).select("id").single();
         if (error) throw error;
-        if (data)
+        if (data) {
           const { error: historyError } = await supabase
             .from("price_history")
             .insert({ product_id: data.id, price: draft.current_price });
           if (historyError) throw historyError;
+        }
       }
     },
     onSuccess: () => {

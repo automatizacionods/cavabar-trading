@@ -1,6 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app/")({
+  head: () => ({
+    meta: [
+      { title: "Inicio | CavaBar Trading" },
+      {
+        name: "description",
+        content: "Consulta el mercado de bebidas, sus precios dinámicos y promociones en vivo.",
+      },
+      { property: "og:title", content: "Inicio | CavaBar Trading" },
+      {
+        property: "og:description",
+        content: "El mercado de bebidas de CavaBar con precios y promociones en vivo.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: HomePage,
 });
 
