@@ -1,6 +1,5 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import {
-  Activity,
   BarChart3,
   CandlestickChart,
   LayoutDashboard,
@@ -13,6 +12,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeSync } from "@/hooks/useTradingData";
@@ -37,7 +37,6 @@ function AdminLayout() {
   const navigate = useNavigate();
   const me = useMyRoles();
 
-
   const signOut = async () => {
     await supabase.auth.signOut();
     void navigate({ to: "/admin/login" });
@@ -58,8 +57,8 @@ function AdminLayout() {
           <ShieldCheck className="mx-auto size-8 text-muted-foreground" />
           <h1 className="mt-3 font-display text-xl font-bold">Sin permisos de administración</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Tu cuenta tiene el rol {ROLE_LABEL[me.data?.roles[0] ?? "usuario"] ?? "Usuario"}. Solicita a un
-            superadministrador que te asigne permisos.
+            Tu cuenta tiene el rol {ROLE_LABEL[me.data?.roles[0] ?? "usuario"] ?? "Usuario"}.
+            Solicita a un superadministrador que te asigne permisos.
           </p>
           <div className="mt-5 flex justify-center gap-2">
             <Link to="/app/trading" className="text-sm text-primary underline">
@@ -75,19 +74,10 @@ function AdminLayout() {
   }
 
   return (
-
     <div className="flex min-h-screen">
       <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-4 lg:flex">
         <Link to="/admin/dashboard" className="flex items-center gap-2 px-2 py-3">
-          <span
-            className="grid size-9 place-items-center rounded-xl"
-            style={{ background: "color-mix(in oklab, var(--primary) 22%, transparent)" }}
-          >
-            <Activity className="size-5 text-primary" />
-          </span>
-          <span className="font-display text-base font-extrabold">
-            CavaBar<span className="text-primary"> Admin</span>
-          </span>
+          <BrandLogo label="CavaBar Admin" imageClassName="size-11" />
         </Link>
 
         <nav className="mt-4 flex flex-1 flex-col gap-1">

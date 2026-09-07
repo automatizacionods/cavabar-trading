@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowUpRight, Maximize2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { CircularCountdown } from "@/components/trading/CircularCountdown";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Sparkline } from "@/components/trading/Sparkline";
 import { useEnforcePublicView } from "@/hooks/useAdminData";
 import { useCountdown } from "@/hooks/useCountdown";
@@ -63,6 +64,7 @@ function TvPage() {
       <div className="mx-auto grid min-h-screen max-w-[1920px] grid-cols-1 gap-8 p-8 lg:grid-cols-[1.4fr_1fr]">
         <section className="flex flex-col justify-center">
           <div className="flex items-center gap-3">
+            <BrandLogo showLabel={false} imageClassName="size-14" />
             <span
               className="size-3 animate-pulse rounded-full"
               style={{ background: "var(--up)" }}
@@ -116,7 +118,8 @@ function TvPage() {
 
                 <div className="mt-8 flex flex-wrap items-end gap-10">
                   <div>
-                    <p className="num text-8xl font-extrabold leading-none xl:text-9xl"
+                    <p
+                      className="num text-8xl font-extrabold leading-none xl:text-9xl"
                       style={{ color: promo ? "var(--promo)" : undefined }}
                     >
                       {formatPrice(promo ? Number(promo.promo_price) : Number(hero.current_price))}

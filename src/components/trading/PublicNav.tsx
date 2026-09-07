@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Activity, CandlestickChart, Flame, Monitor, ShieldCheck } from "lucide-react";
+import { CandlestickChart, Flame, Monitor, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const LINKS = [
   { to: "/app/trading", label: "Trading Board", icon: CandlestickChart },
@@ -21,15 +22,7 @@ export function PublicNav() {
     <header className="sticky top-0 z-30 border-b border-border bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-4 px-4 py-3 sm:px-6">
         <Link to="/app/trading" className="flex items-center gap-2">
-          <span
-            className="grid size-9 place-items-center rounded-xl"
-            style={{ background: "color-mix(in oklab, var(--primary) 22%, transparent)" }}
-          >
-            <Activity className="size-5 text-primary" />
-          </span>
-          <span className="font-display text-lg font-extrabold tracking-tight">
-            CavaBar<span className="text-primary"> Trading</span>
-          </span>
+          <BrandLogo className="text-lg" imageClassName="size-10" />
         </Link>
 
         <nav className="order-3 flex w-full gap-1 sm:order-none sm:w-auto">

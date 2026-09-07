@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-export type AppRole = "superadmin" | "admin" | "usuario" | "staff";
+export type AppRole = "superadmin" | "admin" | "usuario";
 
 export type ManagedUser = {
   id: string;
@@ -18,7 +18,9 @@ const MANAGER_ROLES: AppRole[] = ["superadmin", "admin"];
 async function callerRoles(supabase: NonNullable<unknown>, userId: string): Promise<AppRole[]> {
   const client = supabase as {
     from: (t: string) => {
-      select: (c: string) => { eq: (k: string, v: string) => Promise<{ data: { role: AppRole }[] | null; error: unknown }> };
+      select: (c: string) => {
+        eq: (k: string, v: string) => Promise<{ data: { role: AppRole }[] | null; error: unknown }>;
+      };
     };
   };
   const { data } = await client.from("user_roles").select("role").eq("user_id", userId);
@@ -51,7 +53,8 @@ export const listUsers = createServerFn({ method: "GET" })
     for (const row of roleRows ?? []) {
       const current = byUser.get(row.user_id);
       const rank = (r: AppRole) => (r === "superadmin" ? 3 : r === "admin" ? 2 : 1);
-      if (!current || rank(row.role as AppRole) > rank(current)) byUser.set(row.user_id, row.role as AppRole);
+      if (!current || rank(row.role as AppRole) > rank(current))
+        byUser.set(row.user_id, row.role as AppRole);
     }
 
     return data.users.map((u) => ({
@@ -67,16 +70,19 @@ function assertCanAssign(callerRolesList: AppRole[], target: AppRole) {
   const isSuper = callerRolesList.includes("superadmin");
   if (isSuper) return;
   if (!callerRolesList.includes("admin")) throw new Error("Forbidden");
-  if (target === "superadmin") throw new Error("Solo un superadmin puede asignar el rol superadmin");
+  if (target === "superadmin")
+    throw new Error("Solo un superadmin puede asignar el rol superadmin");
 }
 
 export const createUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { email: string; password: string; role: AppRole }) => {
-    if (!input.email?.includes("@")) throw new Error("Correo inválido");
-    if (!input.password || input.password.length < 6) throw new Error("La contraseña debe tener al menos 6 caracteres");
+    const email = input.email.trim().toLowerCase();
+    if (!email.includes("@")) throw new Error("Correo inválido");
+    if (!input.password || input.password.length < 6)
+      throw new Error("La contraseña debe tener al menos 6 caracteres");
     if (!["superadmin", "admin", "usuario"].includes(input.role)) throw new Error("Rol inválido");
-    return input;
+    return { ...input, email };
   })
   .handler(async ({ data, context }) => {
     const roles = await callerRoles(context.supabase, context.userId);
@@ -106,7 +112,10 @@ export const setUserRole = createServerFn({ method: "POST" })
     assertCanAssign(roles, data.role);
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: targetRoles } = await supabaseAdmin.from("user_roles").select("role").eq("user_id", data.userId);
+    const { data: targetRoles } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.userId);
     const targetIsSuper = (targetRoles ?? []).some((r) => r.role === "superadmin");
     if (targetIsSuper && !roles.includes("superadmin")) {
       throw new Error("No puedes modificar a un superadmin");
@@ -116,7 +125,9 @@ export const setUserRole = createServerFn({ method: "POST" })
     }
 
     await supabaseAdmin.from("user_roles").delete().eq("user_id", data.userId);
-    const { error } = await supabaseAdmin.from("user_roles").insert({ user_id: data.userId, role: data.role });
+    const { error } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: data.userId, role: data.role });
     if (error) throw error;
     return { ok: true };
   });
@@ -130,9 +141,13 @@ export const deleteUser = createServerFn({ method: "POST" })
     if (data.userId === context.userId) throw new Error("No puedes eliminar tu propia cuenta");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: targetRoles } = await supabaseAdmin.from("user_roles").select("role").eq("user_id", data.userId);
+    const { data: targetRoles } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.userId);
     const targetIsSuper = (targetRoles ?? []).some((r) => r.role === "superadmin");
-    if (targetIsSuper && !roles.includes("superadmin")) throw new Error("No puedes eliminar a un superadmin");
+    if (targetIsSuper && !roles.includes("superadmin"))
+      throw new Error("No puedes eliminar a un superadmin");
 
     const { error } = await supabaseAdmin.auth.admin.deleteUser(data.userId);
     if (error) throw error;

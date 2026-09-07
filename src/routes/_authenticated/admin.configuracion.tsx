@@ -15,7 +15,11 @@ export const Route = createFileRoute("/_authenticated/admin/configuracion")({
   head: () => ({
     meta: [
       { title: "Configuración | CavaBar Trading" },
-      { name: "description", content: "Ajusta el nombre del bar, la volatilidad del mercado y el ritmo de actualización de precios." },
+      {
+        name: "description",
+        content:
+          "Ajusta el nombre del bar, la volatilidad del mercado y el ritmo de actualización de precios.",
+      },
       { property: "og:title", content: "Configuración | CavaBar Trading" },
       { property: "og:description", content: "Parámetros del motor de precios." },
     ],
@@ -45,10 +49,18 @@ function ConfiguracionPage() {
 
   const save = useMutation({
     mutationFn: async () => {
+      const cleanName = barName.trim();
+      if (!cleanName) throw new Error("Ingresa el nombre del bar");
+      if (!Number.isFinite(volatility) || volatility < 0 || volatility > 100) {
+        throw new Error("La volatilidad debe estar entre 0 y 100");
+      }
+      if (!Number.isInteger(tick) || tick < 1) {
+        throw new Error("El intervalo debe ser un número entero mayor que cero");
+      }
       const { error } = await supabase
         .from("settings")
         .update({
-          bar_name: barName,
+          bar_name: cleanName,
           auto_pricing: autoPricing,
           volatility,
           tick_seconds: tick,
@@ -94,6 +106,8 @@ function ConfiguracionPage() {
             <Label>Volatilidad (%)</Label>
             <Input
               type="number"
+              min={0}
+              max={100}
               step="0.5"
               value={volatility}
               onChange={(e) => setVolatility(Number(e.target.value))}
@@ -101,7 +115,13 @@ function ConfiguracionPage() {
           </div>
           <div className="space-y-1.5">
             <Label>Intervalo de actualización (seg)</Label>
-            <Input type="number" value={tick} onChange={(e) => setTick(Number(e.target.value))} />
+            <Input
+              type="number"
+              min={1}
+              step={1}
+              value={tick}
+              onChange={(e) => setTick(Number(e.target.value))}
+            />
           </div>
         </div>
 
@@ -119,7 +139,11 @@ function ConfiguracionPage() {
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           {[
-            { v: "trading", t: "Mercado de barra en vivo", d: "Gráfico de velas, watchlist y promociones." },
+            {
+              v: "trading",
+              t: "Mercado de barra en vivo",
+              d: "Gráfico de velas, watchlist y promociones.",
+            },
             { v: "tv", t: "Modo TV", d: "Productos con fotos y precios en rotación." },
           ].map((o) => (
             <button
@@ -146,7 +170,7 @@ function ConfiguracionPage() {
         <p className="text-[11px] uppercase tracking-widest text-muted-foreground">Sesión</p>
         <p className="mt-1">{user?.email ?? "—"}</p>
         <p className="mt-2 text-xs text-muted-foreground">
-          La primera cuenta registrada queda como administradora del bar.
+          Las cuentas y sus permisos se administran desde la sección Usuarios.
         </p>
       </div>
     </div>

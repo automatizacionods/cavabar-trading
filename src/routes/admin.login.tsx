@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BrandLogo } from "@/components/BrandLogo";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
-import logo from "@/assets/cavabar-trading-logo.jpeg";
 
 export const Route = createFileRoute("/admin/login")({
   head: () => ({
@@ -16,7 +16,8 @@ export const Route = createFileRoute("/admin/login")({
       { title: "Acceso administrador | CavaBar Trading" },
       {
         name: "description",
-        content: "Ingresa al panel de administración de CavaBar Trading para gestionar productos y promociones.",
+        content:
+          "Ingresa al panel de administración de CavaBar Trading para gestionar productos y promociones.",
       },
       { property: "og:title", content: "Acceso administrador | CavaBar Trading" },
       { property: "og:description", content: "Panel de control del bar." },
@@ -77,16 +78,11 @@ function LoginPage() {
     <div className="grid-lines flex min-h-screen items-center justify-center px-4">
       <div className="glass w-full max-w-md rounded-3xl p-8">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="CavaBar Trading" className="size-14 rounded-xl object-cover" />
-          <span className="font-display text-xl font-extrabold">
-            CavaBar<span className="text-primary"> Trading</span>
-          </span>
+          <BrandLogo className="text-xl" imageClassName="size-16" />
         </div>
 
         <h1 className="mt-6 font-display text-2xl font-bold">
-          {mode === "recover"
-            ? "Recuperar contraseña"
-            : "Panel de administración"}
+          {mode === "recover" ? "Recuperar contraseña" : "Panel de administración"}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {mode === "recover"

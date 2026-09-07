@@ -9,7 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ROLE_LABEL, useMyRoles } from "@/hooks/useRoles";
-import { createUser, deleteUser, listUsers, setUserRole, type AppRole } from "@/lib/users.functions";
+import {
+  createUser,
+  deleteUser,
+  listUsers,
+  setUserRole,
+  type AppRole,
+} from "@/lib/users.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/usuarios")({
   head: () => ({
@@ -123,7 +129,13 @@ function UsersPage() {
         >
           <div>
             <Label htmlFor="new-email">Correo</Label>
-            <Input id="new-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input
+              id="new-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <div>
             <Label htmlFor="new-pass">Contraseña</Label>
@@ -187,7 +199,9 @@ function UsersPage() {
                           className="h-8 rounded-md border border-input bg-background px-2 text-xs disabled:opacity-50"
                           value={u.role}
                           disabled={locked || roleMut.isPending}
-                          onChange={(e) => roleMut.mutate({ userId: u.id, role: e.target.value as AppRole })}
+                          onChange={(e) =>
+                            roleMut.mutate({ userId: u.id, role: e.target.value as AppRole })
+                          }
                         >
                           {(locked ? [u.role] : options).map((r) => (
                             <option key={r} value={r}>
@@ -197,7 +211,9 @@ function UsersPage() {
                         </select>
                       </td>
                       <td className="py-2.5 text-muted-foreground">
-                        {u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString("es-CO") : "—"}
+                        {u.last_sign_in_at
+                          ? new Date(u.last_sign_in_at).toLocaleString("es-CO")
+                          : "—"}
                       </td>
                       <td className="py-2.5 text-right">
                         <Button
