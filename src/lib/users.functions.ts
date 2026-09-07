@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-export type AppRole = "superadmin" | "admin" | "usuario" | "staff";
+export type AppRole = "superadmin" | "admin" | "usuario";
 
 export type ManagedUser = {
   id: string;
@@ -73,10 +73,11 @@ function assertCanAssign(callerRolesList: AppRole[], target: AppRole) {
 export const createUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { email: string; password: string; role: AppRole }) => {
-    if (!input.email?.includes("@")) throw new Error("Correo inválido");
+    const email = input.email.trim().toLowerCase();
+    if (!email.includes("@")) throw new Error("Correo inválido");
     if (!input.password || input.password.length < 6) throw new Error("La contraseña debe tener al menos 6 caracteres");
     if (!["superadmin", "admin", "usuario"].includes(input.role)) throw new Error("Rol inválido");
-    return input;
+    return { ...input, email };
   })
   .handler(async ({ data, context }) => {
     const roles = await callerRoles(context.supabase, context.userId);

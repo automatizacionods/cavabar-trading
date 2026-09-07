@@ -81,24 +81,40 @@ function ProductosPage() {
 
   const save = useMutation({
     mutationFn: async () => {
+      const name = draft.name.trim();
+      if (!name) throw new Error("Ingresa el nombre del producto");
+      if (![draft.base_price, draft.min_price, draft.max_price, draft.current_price].every(Number.isFinite)) {
+        throw new Error("Todos los precios deben ser números válidos");
+      }
+      if (draft.min_price < 0 || draft.max_price < 0 || draft.base_price < 0 || draft.current_price < 0) {
+        throw new Error("Los precios no pueden ser negativos");
+      }
+      if (draft.min_price > draft.max_price) throw new Error("El precio mínimo no puede superar al máximo");
+      if (draft.current_price < draft.min_price || draft.current_price > draft.max_price) {
+        throw new Error("El precio actual debe estar dentro del rango mínimo y máximo");
+      }
+      if (!Number.isInteger(draft.stock) || draft.stock < 0) throw new Error("El stock debe ser un número entero positivo");
       const payload = {
         ...draft,
+        name,
         image_url: draft.image_url || null,
         previous_price: editing ? Number(editing.current_price) : draft.current_price,
       };
       if (editing) {
         const { error } = await supabase.from("products").update(payload).eq("id", editing.id);
         if (error) throw error;
-        await supabase
+        const { error: historyError } = await supabase
           .from("price_history")
           .insert({ product_id: editing.id, price: draft.current_price });
+        if (historyError) throw historyError;
       } else {
         const { data, error } = await supabase.from("products").insert(payload).select("id").single();
         if (error) throw error;
         if (data)
-          await supabase
+          const { error: historyError } = await supabase
             .from("price_history")
             .insert({ product_id: data.id, price: draft.current_price });
+          if (historyError) throw historyError;
       }
     },
     onSuccess: () => {
@@ -193,6 +209,8 @@ function ProductosPage() {
               <Field label="Stock">
                 <Input
                   type="number"
+                  min={0}
+                  step={1}
                   value={draft.stock}
                   onChange={(e) => setDraft({ ...draft, stock: Number(e.target.value) })}
                 />
@@ -213,6 +231,7 @@ function ProductosPage() {
               <Field label="Precio base">
                 <Input
                   type="number"
+                  min={0}
                   value={draft.base_price}
                   onChange={(e) => setDraft({ ...draft, base_price: Number(e.target.value) })}
                 />
@@ -220,6 +239,7 @@ function ProductosPage() {
               <Field label="Precio actual">
                 <Input
                   type="number"
+                  min={0}
                   value={draft.current_price}
                   onChange={(e) => setDraft({ ...draft, current_price: Number(e.target.value) })}
                 />
@@ -227,6 +247,7 @@ function ProductosPage() {
               <Field label="Precio mínimo">
                 <Input
                   type="number"
+                  min={0}
                   value={draft.min_price}
                   onChange={(e) => setDraft({ ...draft, min_price: Number(e.target.value) })}
                 />
@@ -234,6 +255,7 @@ function ProductosPage() {
               <Field label="Precio máximo">
                 <Input
                   type="number"
+                  min={0}
                   value={draft.max_price}
                   onChange={(e) => setDraft({ ...draft, max_price: Number(e.target.value) })}
                 />

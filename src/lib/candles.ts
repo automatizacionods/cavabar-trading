@@ -71,12 +71,13 @@ export function simulateTick(
   last: Candle,
   bounds: { min: number; max: number },
   volatility = 3,
+  intervalSeconds = 3,
 ): Candle {
   const drift = (Math.random() - 0.5) * (volatility / 100) * last.close;
   const pullback = ((bounds.min + bounds.max) / 2 - last.close) * 0.03;
   const close = Math.max(bounds.min, Math.min(bounds.max, last.close + drift + pullback));
   return {
-    time: last.time + 3,
+    time: last.time + Math.max(1, intervalSeconds),
     open: last.close,
     close,
     high: Math.max(last.close, close) * (1 + Math.random() * 0.004),
@@ -105,7 +106,7 @@ export function seedCandles(
   };
   out.push(prev);
   for (let i = 1; i < count; i += 1) {
-    const next = simulateTick(prev, bounds, 2);
+    const next = simulateTick(prev, bounds, 2, intervalSeconds);
     prev = { ...next, time: start + i * intervalSeconds };
     out.push(prev);
   }

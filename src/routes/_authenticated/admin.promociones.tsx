@@ -66,6 +66,9 @@ function PromocionesAdminPage() {
   const launch = useMutation({
     mutationFn: async () => {
       if (!selected) throw new Error("Selecciona un producto");
+      if (!Number.isFinite(value) || value <= 0) throw new Error("El descuento debe ser mayor que cero");
+      if (type !== "fixed" && value > 100) throw new Error("El descuento porcentual no puede superar el 100%");
+      if (!Number.isFinite(duration) || duration <= 0) throw new Error("La duración debe ser mayor que cero");
       const now = new Date();
       const ends = new Date(now.getTime() + duration * 60_000);
       const { error } = await supabase.from("promotions").insert({
@@ -153,6 +156,8 @@ function PromocionesAdminPage() {
               <Label>{type === "fixed" ? "Descuento en pesos" : "Descuento %"}</Label>
               <Input
                 type="number"
+                min={1}
+                max={type === "fixed" ? undefined : 100}
                 value={value}
                 onChange={(e) => setValue(Number(e.target.value))}
               />
@@ -193,6 +198,7 @@ function PromocionesAdminPage() {
               {useCustom ? (
                 <Input
                   type="number"
+                  min={1}
                   className="w-28"
                   value={custom}
                   onChange={(e) => setCustom(Number(e.target.value))}

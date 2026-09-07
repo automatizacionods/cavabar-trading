@@ -158,7 +158,7 @@ export function MainChart({
     const id = window.setInterval(() => {
       const last = dataRef.current[dataRef.current.length - 1];
       if (!last) return;
-      const next = simulateTick(last, bounds, volatility);
+      const next = simulateTick(last, bounds, volatility, config.chart_interval_seconds);
       dataRef.current = [...dataRef.current, next].slice(-400);
       if (seriesRef.current) applyData(seriesRef.current, dataRef.current, type);
       chartRef.current?.timeScale().scrollToRealTime();
